@@ -1,6 +1,5 @@
 CREATE SCHEMA briskport;
 CREATE USER briskport_user WITH PASSWORD 'admin';
-CREATE USER briskport_user WITH PASSWORD 'admin';
 GRANT USAGE ON SCHEMA briskport TO briskport_user;
 GRANT CREATE ON SCHEMA briskport to briskport_user;
 GRANT ALL ON ALL TABLES IN SCHEMA briskport to briskport_user;
