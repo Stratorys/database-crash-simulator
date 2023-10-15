@@ -47,6 +47,10 @@ func main() {
 		WithExec([]string{"go", "run", "cmd/main.go", "--must-panic"}).
 		Stdout(ctx)
 
+	if err != nil {
+		panic(err.Error())
+	}
+
 	fmt.Println("debug outputWithCrash = ", outputWithCrash)
 
 	outputWithoutCrash, err := client.Container().From("golang:1.21.3-bookworm").
@@ -64,9 +68,9 @@ func main() {
 		WithExec([]string{"go", "run", "cmd/main.go"}).
 		Stdout(ctx)
 
+	if err != nil {
+		panic(err.Error())
+	}
+
 	fmt.Println("debug outputWithoutCrash = ", outputWithoutCrash)
-}
-
-func setupPostgres() {
-
 }
