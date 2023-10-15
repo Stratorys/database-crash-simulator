@@ -24,15 +24,22 @@ func main() {
 	src := client.Host().Directory(".")
 	pgPort := 5444
 
-	database := client.Container().From("postgres:15.4-bookworm").
+	database := client.Container().
+		From("postgres:15.4-bookworm").
 		WithEnvVariable("POSTGRES_USER", "admin").
 		WithEnvVariable("POSTGRES_DB", "postgres").
 		WithEnvVariable("POSTGRES_PASSWORD", "admin").
 		WithMountedFile("/docker-entrypoint-initdb.d/init.sql", sqlInit).
 		WithExec([]string{"postgres"}).
-		WithExposedPort(pgPort)
+		WithExposedPort(5432)
 
-	outputWithCrash, err := client.Container().From("golang:1.21.3-bookworm").
+	_, err = database.Endpoint(ctx, dagger.ContainerEndpointOpts{Port: pgPort})
+	if err != nil {
+		panic(err.Error())
+	}
+
+	outputWithCrash, err := client.Container().
+		From("golang:1.21.3-bookworm").
 		WithServiceBinding("postgres", database).
 		WithEnvVariable("DB_HOST", "postgres").
 		WithEnvVariable("DB_PORT", strconv.Itoa(pgPort)).
@@ -53,7 +60,8 @@ func main() {
 
 	fmt.Println("debug outputWithCrash = ", outputWithCrash)
 
-	outputWithoutCrash, err := client.Container().From("golang:1.21.3-bookworm").
+	outputWithoutCrash, err := client.Container().
+		From("golang:1.21.3-bookworm").
 		WithServiceBinding("postgres", database).
 		WithEnvVariable("DB_HOST", "postgres").
 		WithEnvVariable("DB_PORT", strconv.Itoa(pgPort)).
