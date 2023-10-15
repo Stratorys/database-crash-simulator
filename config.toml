@@ -1,0 +1,7 @@
+[config]
+pg_user = "briskport_user"
+pg_password = "admin"
+pg_port = 5432
+pg_host = "localhost"
+pg_schema = "briskport"
+pg_database = "postgres"
