@@ -5,9 +5,8 @@ import (
 	"flag"
 	"fmt"
 	_ "github.com/lib/pq"
+	"github.com/stratorys/database-crash-simulator/pkg/config"
 	"log"
-	"os"
-	"strconv"
 	"time"
 )
 
@@ -17,20 +16,15 @@ func main() {
 	mustPanic := flag.Bool("must-panic", false, "if argument is true then application will crash after 15s")
 	flag.Parse()
 
-	fmt.Println("debug ", *mustPanic)
-
-	port, err := strconv.Atoi(os.Getenv("DB_PORT"))
-	if err != nil {
-		log.Fatal("port is not a number")
-	}
+	cfg := config.Load()
 
 	dsn := fmt.Sprintf("user=%s password='%s' host=%s port=%d dbname=%s search_path=%s sslmode=disable",
-		os.Getenv("DB_USERNAME"),
-		os.Getenv("DB_PASSWORD"),
-		os.Getenv("DB_HOSTNAME"),
-		port,
-		os.Getenv("DB_DATABASE"),
-		os.Getenv("DB_SCHEMA"),
+		cfg.Config.PGUser,
+		cfg.Config.PGPassword,
+		cfg.Config.PGHost,
+		cfg.Config.PGPort,
+		cfg.Config.PGDatabase,
+		cfg.Config.PGSchema,
 	)
 	isConnected := TestDBConnection(dsn)
 
