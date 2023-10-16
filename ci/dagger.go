@@ -22,7 +22,6 @@ func main() {
 
 	sqlInit := client.Host().Directory(".").File("init.sql")
 	src := client.Host().Directory(".")
-	pgPort := 5444
 
 	database := client.Container().
 		From("postgres:15.4-bookworm").
@@ -33,7 +32,7 @@ func main() {
 		WithExec([]string{"postgres"}).
 		WithExposedPort(5432)
 
-	_, err = database.Endpoint(ctx, dagger.ContainerEndpointOpts{Port: pgPort})
+	_, err = database.Endpoint(ctx, dagger.ContainerEndpointOpts{Port: 5432})
 	if err != nil {
 		panic(err.Error())
 	}
@@ -42,7 +41,7 @@ func main() {
 		From("golang:1.21.3-bookworm").
 		WithServiceBinding("postgres", database).
 		WithEnvVariable("DB_HOST", "postgres").
-		WithEnvVariable("DB_PORT", strconv.Itoa(pgPort)).
+		WithEnvVariable("DB_PORT", strconv.Itoa(5432)).
 		WithEnvVariable("DB_PASSWORD", "admin").
 		WithEnvVariable("DB_USER", "briskport_user").
 		WithEnvVariable("DB_NAME", "postgres").
@@ -64,7 +63,7 @@ func main() {
 		From("golang:1.21.3-bookworm").
 		WithServiceBinding("postgres", database).
 		WithEnvVariable("DB_HOST", "postgres").
-		WithEnvVariable("DB_PORT", strconv.Itoa(pgPort)).
+		WithEnvVariable("DB_PORT", strconv.Itoa(5432)).
 		WithEnvVariable("DB_PASSWORD", "admin").
 		WithEnvVariable("DB_USER", "briskport_user").
 		WithEnvVariable("DB_NAME", "postgres").
