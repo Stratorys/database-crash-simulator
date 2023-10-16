@@ -40,10 +40,10 @@ func main() {
 	outputWithCrash, err := client.Container().
 		From("golang:1.21.3-bookworm").
 		WithServiceBinding("postgres", database).
-		WithEnvVariable("DB_HOST", "postgres").
+		WithEnvVariable("DB_HOSTNAME", "postgres").
 		WithEnvVariable("DB_PORT", strconv.Itoa(5432)).
 		WithEnvVariable("DB_PASSWORD", "admin").
-		WithEnvVariable("DB_USER", "briskport_user").
+		WithEnvVariable("DB_USERNAME", "briskport_user").
 		WithEnvVariable("DB_NAME", "postgres").
 		WithEnvVariable("DB_SCHEMA", "briskport").
 		WithDirectory("/src", src, dagger.ContainerWithDirectoryOpts{
@@ -62,10 +62,10 @@ func main() {
 	outputWithoutCrash, err := client.Container().
 		From("golang:1.21.3-bookworm").
 		WithServiceBinding("postgres", database).
-		WithEnvVariable("DB_HOST", "postgres").
+		WithEnvVariable("DB_HOSTNAME", "postgres").
 		WithEnvVariable("DB_PORT", strconv.Itoa(5432)).
 		WithEnvVariable("DB_PASSWORD", "admin").
-		WithEnvVariable("DB_USER", "briskport_user").
+		WithEnvVariable("DB_USERNAME", "briskport_user").
 		WithEnvVariable("DB_NAME", "postgres").
 		WithEnvVariable("DB_SCHEMA", "briskport").
 		WithDirectory("/src", src, dagger.ContainerWithDirectoryOpts{

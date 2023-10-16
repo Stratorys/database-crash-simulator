@@ -29,7 +29,7 @@ func main() {
 		os.Getenv("DB_PASSWORD"),
 		os.Getenv("DB_HOSTNAME"),
 		port,
-		os.Getenv("DB_DATABASE"),
+		os.Getenv("DB_NAME"),
 		os.Getenv("DB_SCHEMA"),
 	)
 	isConnected := TestDBConnection(dsn)
@@ -43,6 +43,8 @@ func main() {
 	if *mustPanic == true {
 		panic("crash after 15s")
 	}
+
+	return
 }
 
 func TestDBConnection(connectionString string) bool {
